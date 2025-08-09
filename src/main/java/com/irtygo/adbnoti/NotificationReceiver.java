@@ -57,12 +57,28 @@ public class NotificationReceiver extends BroadcastReceiver {
             notificationManager.createNotificationChannel(channel);
         }
 
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setContentTitle(title != null ? title : "ADB Notification")
             .setContentText(text != null ? text : "")
-            .setPriority(importance)
             .setAutoCancel(true);
+
+        int priority;
+        switch (importance) {
+            case NotificationManager.IMPORTANCE_HIGH:
+                priority = NotificationCompat.PRIORITY_HIGH;
+                break;
+            case NotificationManager.IMPORTANCE_LOW:
+                priority = NotificationCompat.PRIORITY_LOW;
+                break;
+            default:
+                priority = NotificationCompat.PRIORITY_DEFAULT;
+                break;
+        }
+
+        builder.setPriority(priority);
+
 
         int notificationId = random.nextInt(Integer.MAX_VALUE);
 
